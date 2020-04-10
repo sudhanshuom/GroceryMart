@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#EEEEEE">
+
+    <RelativeLayout
+        android:id="@+id/fooo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_centerVertical="true"
+            android:background="#A6BB" />
+
+        <TextView
+            android:id="@+id/viewmore"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="3dp"
+            android:background="#EEEEEE"
+            android:text="View More"
+            android:textColor="#FFBBA6"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fooo"
+        android:layout_marginTop="10dp"
+        app:cardCornerRadius="15dp">
+
+        <com.app.grocerymart.Widget.AutoScrollViewPager
+            android:id="@+id/pager2"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

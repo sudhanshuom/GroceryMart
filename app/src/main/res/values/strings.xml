@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">GroceryMart</string>
+    <string name="title_activity_home">Home</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string name="home_second">Home Second</string>
+    <string name="Home_Welcome_Description"><![CDATA[You can buy fruits, vegetables, beverages, personal care products, household & all grocery items Online with Oristen Online Grocery Store Karnal. Download Oristen app and order all your daily essentials with click of a button and get them delivered at your doorstep with our trusted online grocery delivery service. Online Grocery shopping comes with lots of benefits. You can check out the complete article. Don’t forget to check our offer section for attractive offers. You can follow us on Facebook and Instagram also for daily attractive offers.Lorem ipsum dolor sit amet, consectetur adipiscing elit.]]></string>
+
+    <string-array name="countries">
+        <item>Country</item>
+        <item>India</item>
+        <item>USA</item>
+        <item>Canada</item>
+    </string-array>
+
+</resources>
