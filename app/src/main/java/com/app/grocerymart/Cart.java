@@ -3,11 +3,9 @@ package com.app.grocerymart;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import com.app.grocerymart.Adapters.CartAdapter;
 
 import java.util.ArrayList;
