@@ -1,9 +1,13 @@
 package com.app.grocerymart;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,14 +15,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-//private Api key
-//c1ecce51-50c9-4336-8b6f-bce94b6d5fe2
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
 public class SignUp extends AppCompatActivity {
 
     EditText email, name, pass, pass2;
     Spinner country;
     private Animation shakeAnimation;
+    //Server URL
+    String server_url_signUp = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,25 +55,56 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(isValid()){
-                    String nam = name.getText().toString().trim();
-                    String emai = email.getText().toString().trim();
-                    String pas = pass.getText().toString().trim();
+                    final String nam = name.getText().toString().trim();
+                    final String emai = email.getText().toString().trim();
+                    final String pas = pass.getText().toString().trim();
                     TextView textView = (TextView) country.getSelectedView();
-                    String cnt = textView.getText().toString();
+                    final String cnt = textView.getText().toString();
 
-                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                    final ProgressDialog dialog = ProgressDialog.show(SignUp.this, "",
+                            "Contacting server. Please wait...", true);
+                    dialog.show();
 
-                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+//                    Ion.with(getApplicationContext())
+//                            .load("POST",server_url_signUp)
+//                            .setBodyParameter("name", nam)
+//                            .setBodyParameter("password", pas)
+//                            .setBodyParameter("email", emai)
+//                            .asJsonObject()
+//                            .setCallback(new FutureCallback<JsonObject>() {
+//                                @Override
+//                                public void onCompleted(Exception e, JsonObject result) {
+//                                    /** Server returns a json object, format is specified in the backend
+//                                     documentation
+//                                     */
+//
+//                                    if (result != null) {
+//                                        Log.e("got", result.toString());
+//                                        Toast.makeText(getApplicationContext(), "User-Verified",
+//                                                Toast.LENGTH_LONG).show();
 
-                    myEdit.putString("email", emai);
-                    myEdit.putString("name", nam);
-                    myEdit.putString("pass", pas);
-                    myEdit.putString("country", cnt);
+                                        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
-                    myEdit.apply();
+                                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
 
-                    startActivity(new Intent(SignUp.this, Home.class));
-                    finish();
+                                        myEdit.putString("email", emai);
+                                        myEdit.putString("name", nam);
+                                        myEdit.putString("password", pas);
+                                        myEdit.putString("country", cnt);
+
+                                        myEdit.apply();
+
+                                        dialog.dismiss();
+
+                                        startActivity(new Intent(SignUp.this, Home.class));
+                                        finish();
+
+//                                    } else {
+//                                        dialog.dismiss();
+//                                        Toast.makeText(getApplicationContext(), "Invalid credentials", Toast.LENGTH_LONG).show();
+//                                    }
+//                                }
+//                            });
 
                 }
             }

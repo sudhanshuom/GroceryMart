@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -32,6 +33,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Grocery Mart");
+
         NavigationView navigationView;
         navigationView = getActivity().findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -51,9 +55,9 @@ public class HomeFragment extends Fragment {
         });
 
         SharedPreferences sh = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        String user = sh.getString("user", "");
+        String email = sh.getString("email", "");
 
-        if (user.equals("")) {
+        if (email.equals("")) {
             note.setVisibility(View.VISIBLE);
         }else{
             note.setVisibility(View.GONE);

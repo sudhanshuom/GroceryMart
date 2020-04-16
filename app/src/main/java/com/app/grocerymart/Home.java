@@ -41,6 +41,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        getSupportActionBar().setTitle("Grocery Mart");
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
 
@@ -59,6 +60,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                 }
             }
         });
+
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -85,13 +87,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
             drawer.closeDrawer(GravityCompat.START);
-        }else if(id == R.id.nav_category){
+        } else if(id == R.id.nav_category){
             Fragment fragment = new CategoryFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+            drawer.closeDrawer(GravityCompat.START);
+        } else if(id == R.id.nav_profile){
+            Fragment fragment = new ProfileFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
             drawer.closeDrawer(GravityCompat.START);
         }
         return false;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

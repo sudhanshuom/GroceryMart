@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -26,6 +27,9 @@ public class CategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_category, container, false);
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Category");
+
         NavigationView navigationView;
         navigationView = getActivity().findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(1).setChecked(true);
