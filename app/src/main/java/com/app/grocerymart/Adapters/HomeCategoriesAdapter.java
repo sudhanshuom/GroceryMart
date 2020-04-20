@@ -47,7 +47,7 @@ public class HomeCategoriesAdapter extends BaseAdapter {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (view == null) {
             assert mInflater != null;
-            view = mInflater.inflate(R.layout.home_categories_item_gv, null);
+            view = mInflater.inflate(R.layout.item_for_home_categories, null);
         }
 
         TextView tv = view.findViewById(R.id.category);

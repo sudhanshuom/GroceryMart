@@ -1,17 +1,21 @@
 package com.app.grocerymart.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.viewpager.widget.PagerAdapter;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.grocerymart.Cart;
 import com.app.grocerymart.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -23,18 +27,26 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import java.util.ArrayList;
 
-public class ImageAdapter extends PagerAdapter {
+import static android.content.Context.MODE_PRIVATE;
 
-    ArrayList<String> uris;
-    Context context;
+public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHolder> {
 
-    private LayoutInflater inflater;
+    private Context context;
+    private ArrayList<String> product;
+    private ArrayList<String> qty;
+    private ArrayList<String> status;
+    private ArrayList<String> image;
+    private ArrayList<String> placedDate;
     private DisplayImageOptions options;
 
-    public ImageAdapter(Context context, ArrayList<String> urls) {
-        inflater = LayoutInflater.from(context);
-        this.uris = urls;
-        this.context = context;
+    public MyOrderAdapter(Context ctx, ArrayList<String> pr, ArrayList<String> qty, ArrayList<String> status
+            , ArrayList<String> imag, ArrayList<String> pd) {
+        this.context = ctx;
+        this.product = pr;
+        this.qty = qty;
+        this.status = status;
+        this.image = imag;
+        this.placedDate = pd;
 
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(context));
 
@@ -50,27 +62,25 @@ public class ImageAdapter extends PagerAdapter {
                 .build();
     }
 
+    @NonNull
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        container.removeView((View) object);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(context).inflate(R.layout.item_for_my_order, parent,false);
+        return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
-    public int getCount() {
-        return uris.size();
-    }
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-    @Override
-    public Object instantiateItem(ViewGroup view, int position) {
-        View imageLayout = inflater.inflate(R.layout.imageviewfor_home, view, false);
-        assert imageLayout != null;
-        ImageView imageView = (ImageView) imageLayout.findViewById(R.id.imv);
-        final ProgressBar spinner = (ProgressBar) imageLayout.findViewById(R.id.pg);
+        holder.name.setText(product.get(position));
+        holder.quantiy.setText("Quantity: " + qty.get(position));
+        holder.status.setText("Status: " + status.get(position));
+        holder.date.setText("Placed on: "+placedDate.get(position));
 
-        ImageLoader.getInstance().displayImage(uris.get(position), imageView, options, new SimpleImageLoadingListener() {
+        ImageLoader.getInstance().displayImage(image.get(position), holder.item_img, options, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                spinner.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -94,31 +104,38 @@ public class ImageAdapter extends PagerAdapter {
                         break;
                 }
                 Toast.makeText(view.getContext(), message, Toast.LENGTH_SHORT).show();
-
-                spinner.setVisibility(View.GONE);
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                spinner.setVisibility(View.GONE);
             }
         });
 
-        view.addView(imageLayout, 0);
-        return imageLayout;
     }
 
     @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view.equals(object);
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public void restoreState(Parcelable state, ClassLoader loader) {
+    public int getItemCount() {
+        return product.size();
     }
 
-    @Override
-    public Parcelable saveState() {
-        return null;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView name;
+        TextView status;
+        TextView quantiy;
+        TextView date;
+        ImageView item_img;
+        ViewHolder(View view) {
+            super(view);
+            name = view.findViewById(R.id.item_name);
+            status = view.findViewById(R.id.item_status);
+            quantiy = view.findViewById(R.id.item_quantity);
+            date = view.findViewById(R.id.placed_date);
+            item_img = view.findViewById(R.id.item_image);
+        }
     }
 }

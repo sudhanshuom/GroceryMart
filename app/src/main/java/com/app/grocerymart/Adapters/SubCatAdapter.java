@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.app.grocerymart.R;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -40,7 +39,7 @@ public class SubCatAdapter extends RecyclerView.Adapter<SubCatAdapter.ViewHolder
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(context).inflate(R.layout.sub_category_item, parent,false);
+        View view= LayoutInflater.from(context).inflate(R.layout.item_for_sub_category, parent,false);
         return new ViewHolder(view);
     }
 

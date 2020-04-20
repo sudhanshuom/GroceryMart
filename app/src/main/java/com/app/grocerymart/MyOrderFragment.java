@@ -13,8 +13,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.app.grocerymart.Adapters.MyOrderAdapter;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -25,41 +30,22 @@ public class MyOrderFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_my_order, container, false);
 
-        TextView name = view.findViewById(R.id.pr_name);
-        TextView email = view.findViewById(R.id.pr_email);
+        RecyclerView recyclerView = view.findViewById(R.id.placed_order_rv);
 
         NavigationView navigationView;
         navigationView = getActivity().findViewById(R.id.nav_view);
         navigationView.getMenu().getItem(2).setChecked(true);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle("My Orders");
+        ArrayList<String> name = new ArrayList<>();
+        ArrayList<String> status = new ArrayList<>();
+        ArrayList<String> quantity = new ArrayList<>();
+        ArrayList<String> image = new ArrayList<>();
+        ArrayList<String> date = new ArrayList<>();
 
-        SharedPreferences sh = getActivity().getSharedPreferences("MySharedPref", MODE_PRIVATE);
-        String emai = sh.getString("email", "");
-        String nam = sh.getString("name", "");
+        MyOrderAdapter myOrderAdapter = new MyOrderAdapter(getContext(), name, quantity, status, image, date);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(myOrderAdapter);
 
-        if (emai.equals("")) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-            startActivity(new Intent(getContext(), SignIn.class));
-            Toast.makeText(getContext(), "Please Login First", Toast.LENGTH_LONG).show();
-            getActivity().finish();
-        }else{
-            name.setText(nam);
-            email.setText(emai);
-        }
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new HomeFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
-                ((AppCompatActivity) getActivity()).getSupportActionBar().show();
-            }
-        });
         return view;
     }
 }
