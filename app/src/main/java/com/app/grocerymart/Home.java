@@ -87,6 +87,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
             drawer.closeDrawer(GravityCompat.START);
+        } else if(id == R.id.nav_my_orders){
+            Fragment fragment = new MyOrderFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+            drawer.closeDrawer(GravityCompat.START);
         } else if(id == R.id.nav_category){
             Fragment fragment = new CategoryFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();

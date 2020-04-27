@@ -14,6 +14,8 @@
 
     <string name="home_second">Home Second</string>
     <string name="Home_Welcome_Description"><![CDATA[You can buy fruits, vegetables, beverages, personal care products, household & all grocery items Online with Oristen Online Grocery Store Karnal. Download Oristen app and order all your daily essentials with click of a button and get them delivered at your doorstep with our trusted online grocery delivery service. Online Grocery shopping comes with lots of benefits. You can check out the complete article. Don’t forget to check our offer section for attractive offers. You can follow us on Facebook and Instagram also for daily attractive offers.Lorem ipsum dolor sit amet, consectetur adipiscing elit.]]></string>
+    <string name="channel_name">Notification</string>
+    <string name="channel_description">For Sending Notification</string>
 
     <string-array name="countries">
         <item>Country</item>

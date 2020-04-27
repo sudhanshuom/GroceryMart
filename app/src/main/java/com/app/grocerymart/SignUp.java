@@ -27,7 +27,7 @@ public class SignUp extends AppCompatActivity {
     Spinner country;
     private Animation shakeAnimation;
     //Server URL
-    String server_url_signUp = "";
+    String server_url_signUp = "http://e-grocery-mart.herokuapp.com/doSignupRes";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,46 +65,49 @@ public class SignUp extends AppCompatActivity {
                             "Contacting server. Please wait...", true);
                     dialog.show();
 
-//                    Ion.with(getApplicationContext())
-//                            .load("POST",server_url_signUp)
-//                            .setBodyParameter("name", nam)
-//                            .setBodyParameter("password", pas)
-//                            .setBodyParameter("email", emai)
-//                            .asJsonObject()
-//                            .setCallback(new FutureCallback<JsonObject>() {
-//                                @Override
-//                                public void onCompleted(Exception e, JsonObject result) {
-//                                    /** Server returns a json object, format is specified in the backend
-//                                     documentation
-//                                     */
-//
-//                                    if (result != null) {
-//                                        Log.e("got", result.toString());
-//                                        Toast.makeText(getApplicationContext(), "User-Verified",
-//                                                Toast.LENGTH_LONG).show();
+                    Ion.with(getApplicationContext())
+                            .load("POST",server_url_signUp)
+                            .setBodyParameter("name", nam)
+                            .setBodyParameter("email", emai)
+                            .setBodyParameter("password", pas)
+                            .setBodyParameter("passwordTwo", pas)
+                            .asJsonObject()
+                            .setCallback(new FutureCallback<JsonObject>() {
+                                @Override
+                                public void onCompleted(Exception e, JsonObject result) {
+                                    /** Server returns a json object, format is specified in the backend
+                                     documentation
+                                     */
+                                    Log.e("got", result.toString());
+                                    if (result != null && result.get("email") != null) {
+                                        Log.e("got", result.toString());
+                                        Toast.makeText(getApplicationContext(), "User Registered",
+                                                Toast.LENGTH_LONG).show();
 
                                         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
-
                                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
 
                                         myEdit.putString("email", emai);
                                         myEdit.putString("name", nam);
-                                        myEdit.putString("password", pas);
-                                        myEdit.putString("country", cnt);
+                                        myEdit.putString("_id", result.get("_id").getAsString());
 
                                         myEdit.apply();
 
                                         dialog.dismiss();
 
-                                        startActivity(new Intent(SignUp.this, Home.class));
+                                        //startActivity(new Intent(SignUp.this, Home.class));
                                         finish();
 
-//                                    } else {
-//                                        dialog.dismiss();
-//                                        Toast.makeText(getApplicationContext(), "Invalid credentials", Toast.LENGTH_LONG).show();
-//                                    }
-//                                }
-//                            });
+                                    } else {
+                                        dialog.dismiss();
+                                        if(result.get("_id").getAsString().equals("-1")) {
+                                            Toast.makeText(getApplicationContext(), "User already exist", Toast.LENGTH_LONG).show();
+                                        } else{
+                                            Toast.makeText(getApplicationContext(), "Failed creating account.", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                }
+                            });
 
                 }
             }

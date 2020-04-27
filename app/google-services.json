@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "937796107483",
+    "firebase_url": "https://grocerymart-ea511.firebaseio.com",
+    "project_id": "grocerymart-ea511",
+    "storage_bucket": "grocerymart-ea511.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937796107483:android:f46b016c80dc46be64e0fe",
+        "android_client_info": {
+          "package_name": "com.app.grocerymart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937796107483-kqm1fc2l4ckuasno6ou0nrjo1k43uos4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.grocerymart",
+            "certificate_hash": "d69d86c1031f9c9744cbe626f533b19b3f35e5b8"
+          }
+        },
+        {
+          "client_id": "937796107483-ms9jo9v8irls0shv237r6leb9bb5c5lq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxXGEKbWOA8N_hF6M4CBEI5-N7-srYsPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937796107483-ms9jo9v8irls0shv237r6leb9bb5c5lq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

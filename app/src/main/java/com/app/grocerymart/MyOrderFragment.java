@@ -31,6 +31,7 @@ public class MyOrderFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_my_order, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.placed_order_rv);
+        TextView noorder = view.findViewById(R.id.no_order);
 
         NavigationView navigationView;
         navigationView = getActivity().findViewById(R.id.nav_view);

@@ -1,12 +1,22 @@
 package com.app.grocerymart;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.app.grocerymart.Adapters.CartAdapter;
 
@@ -24,6 +34,7 @@ public class Cart extends AppCompatActivity {
 
         finPrice = findViewById(R.id.totprice);
         RecyclerView rv = findViewById(R.id.cartitems);
+        Button checkout = findViewById(R.id.checkout);
 
         ArrayList<String> title = new ArrayList<>();
         ArrayList<String> amount = new ArrayList<>();
@@ -66,9 +77,38 @@ public class Cart extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(Cart.this));
         rv.setAdapter(cd);
         updatePrice();
+
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //saveData();
+                //sendNotification();
+                SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                String emai = sh.getString("email", "");
+
+                if (emai.equals("")) {
+                    startActivity(new Intent(Cart.this, SignIn.class));
+                    Toast.makeText(Cart.this, "Please Login First", Toast.LENGTH_LONG).show();
+                }else {
+                    startActivity(new Intent(Cart.this, Checkout.class));
+                }
+            }
+        });
     }
 
-   static public void updatePrice(){
+    private void sendNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "Order")
+                .setSmallIcon(R.drawable.ic_shopping_cart)
+                .setContentTitle("Order")
+                .setContentText("Order Placed Successfully")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        notificationManager.notify(234, builder.build());
+    }
+
+    static public void updatePrice(){
 
         int a = sharedPreferences.getInt("Coffee", 0);
         int b = sharedPreferences.getInt("Tea", 0);
