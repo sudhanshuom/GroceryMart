@@ -1,26 +1,22 @@
 package com.app.grocerymart;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-
 import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
 import com.razorpay.Checkout;
+import com.razorpay.Order;
 import com.razorpay.PaymentResultListener;
-
+import com.razorpay.RazorpayClient;
 import org.json.JSONObject;
-
 import java.util.Calendar;
 
 public class PaymentActivity extends Activity implements PaymentResultListener {
     String name = "", email = "", orderId = "";
+    RazorpayClient razorpay = new RazorpayClient("rzp_test_gxXdHsXsGPtTvp", "8Jc8j68xWN9KtL5nlMuvZdAr");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,36 +28,41 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
         if(email.equals("")){
 
         }else{
-            //startPayment();
+            final ProgressDialog dialog = ProgressDialog.show(PaymentActivity.this, "",
+                    "Please wait...", true);
+            dialog.show();
             try {
-                orderId = "order" + Calendar.getInstance().getTimeInMillis();
-                JsonObject orderRequest = new JsonObject();
-                orderRequest.addProperty("amount", 500); // amount in the smallest currency unit
-                orderRequest.addProperty("currency", "INR");
-                orderRequest.addProperty("receipt", orderId);
-                orderRequest.addProperty("payment_capture", false);
 
-                Ion.with(getApplicationContext())
-                        .load("POST","https://api.razorpay.com/v1/orders")
-                        .setJsonObjectBody(orderRequest)
-                        .asJsonObject()
-                        .setCallback(new FutureCallback<JsonObject>() {
-                            @Override
-                            public void onCompleted(Exception e, JsonObject result) {
-                                /** Server returns a json object, format is specified in the backend
-                                 documentation
-                                 */
-                                if(result!= null)
-                                Log.e("got", result.toString());
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                                orderId = "order" + Calendar.getInstance().getTimeInMillis();
+                                JSONObject orderRequest = new JSONObject();
+                                orderRequest.put("amount", 500); // amount in the smallest currency unit
+                                orderRequest.put("currency", "INR");
+                                orderRequest.put("receipt", email);
+                                orderRequest.put("payment_capture", true);
 
-                                if(e != null){
-                                    Log.e("got", e.toString());
-                                }
-                            }
-                        });
+                                Order order = razorpay.Orders.create(orderRequest);
+
+                                orderId = order.get("id");
+                                startPayment();
+                                dialog.cancel();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                thread.start();
+
 
             } catch (Exception e) {
                 // Handle Exception
+                dialog.cancel();
+                Log.e("excep", e.toString());
                 System.out.println(e.getMessage());
             }
         }
@@ -69,11 +70,12 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
     }
 
     public void startPayment() {
-        Checkout checkout = new Checkout();
-        checkout.setKeyID("rzp_test_gxXdHsXsGPtTvp");
+
         /**
          * Instantiate Checkout
          */
+        Checkout checkout = new Checkout();
+        checkout.setKeyID("rzp_test_gxXdHsXsGPtTvp");
 
         /**
          * Set your logo here
@@ -122,6 +124,12 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
 
     @Override
     public void onPaymentSuccess(String s) {
+        JsonObject user = new JsonObject();
+        SharedPreferences sh = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+        String emai = sh.getString("email", "");
+        String nam = sh.getString("name", "");
+        user.addProperty("name", nam);
+        user.addProperty("email", emai);
         Log.e("paysucc", s);
     }
 

@@ -6,9 +6,18 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.app.grocerymart.Singelton.Categories;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,10 +28,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        createNotificationChannels();
+        //createNotificationChannels();
+        Ion.with(getApplicationContext())
+                .load("GET","http://ec2-18-218-92-210.us-east-2.compute.amazonaws.com:3030/getCategories")
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonArray result) {
+                        /** Server returns a json object, format is specified in the backend
+                         documentation
+                         */
+                        Log.e("got", result+"");
 
-        startActivity(new Intent(MainActivity.this, Home.class));
-        finish();
+                        if (result != null) {
+                            Toast.makeText(getApplicationContext(), "User-Verified",
+                                    Toast.LENGTH_LONG).show();
+
+                            Categories cg = Categories.getInstance();
+                            cg.setJsonArray(result);
+                            startActivity(new Intent(MainActivity.this, Home.class));
+
+                            finish();
+
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Invalid credentials", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     private void createNotificationChannels() {

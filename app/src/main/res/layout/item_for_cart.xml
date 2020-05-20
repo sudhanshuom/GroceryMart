@@ -9,6 +9,13 @@
     android:layout_margin="5dp"
     android:background="#FFFFFF">
 
+    <ImageView
+        android:id="@+id/productImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/product"
         style="@style/TextAppearance.AppCompat.Body1"
@@ -16,7 +23,9 @@
         android:layout_height="wrap_content"
         android:text="Product"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/productImage"
+        app:layout_constraintStart_toEndOf="@+id/productImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -25,22 +34,23 @@
         android:layout_height="wrap_content"
         android:text="Amount: "
         android:textSize="14sp"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product" />
+        app:layout_constraintTop_toBottomOf="@+id/price" />
 
     <TextView
         android:id="@+id/price"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="20dp"
         android:text="Rs. 50.0"
         android:textSize="16sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/productImage" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -48,7 +58,7 @@
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/productImage">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
@@ -59,7 +69,8 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/img_selector"
-                android:src="@drawable/add"
+                android:padding="8dp"
+                android:src="@drawable/minus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/qty" />
 

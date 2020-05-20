@@ -17,9 +17,11 @@ import androidx.fragment.app.FragmentManager;
 
 import com.app.grocerymart.Adapters.HomeCategoriesAdapter;
 import com.app.grocerymart.Adapters.ImageAdapter;
+import com.app.grocerymart.Singelton.Categories;
 import com.app.grocerymart.Widget.AutoScrollViewPager;
 import com.app.grocerymart.Widget.HeaderGridView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.JsonArray;
 
 import java.util.ArrayList;
 
@@ -83,19 +85,19 @@ public class HomeFragment extends Fragment {
         ArrayList<String> urls = new ArrayList<>();
         ArrayList<String> urls2 = new ArrayList<>();
 
-        Drawable imgss[] = {
-                getActivity().getResources().getDrawable(R.drawable.beverages),
-                getActivity().getResources().getDrawable(R.drawable.bakery),
-                getActivity().getResources().getDrawable(R.drawable.canned),
-                getActivity().getResources().getDrawable(R.drawable.baking),
-//                getActivity().getResources().getDrawable(R.drawable.dairy),
-//                getActivity().getResources().getDrawable(R.drawable.frozen),
-//                getActivity().getResources().getDrawable(R.drawable.meat),
-//                getActivity().getResources().getDrawable(R.drawable.produce),
-//                getActivity().getResources().getDrawable(R.drawable.soap),
-//                getActivity().getResources().getDrawable(R.drawable.cleaners),
-//                getActivity().getResources().getDrawable(R.drawable.paper)
-        };
+//        Drawable imgss[] = {
+//                getActivity().getResources().getDrawable(R.drawable.beverages),
+//                getActivity().getResources().getDrawable(R.drawable.bakery),
+//                getActivity().getResources().getDrawable(R.drawable.canned),
+//                getActivity().getResources().getDrawable(R.drawable.baking),
+////                getActivity().getResources().getDrawable(R.drawable.dairy),
+////                getActivity().getResources().getDrawable(R.drawable.frozen),
+////                getActivity().getResources().getDrawable(R.drawable.meat),
+////                getActivity().getResources().getDrawable(R.drawable.produce),
+////                getActivity().getResources().getDrawable(R.drawable.soap),
+////                getActivity().getResources().getDrawable(R.drawable.cleaners),
+////                getActivity().getResources().getDrawable(R.drawable.paper)
+//        };
 
         urls.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
         urls.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
@@ -121,12 +123,16 @@ public class HomeFragment extends Fragment {
 
         ArrayList<String> title = new ArrayList<>();
         ArrayList<Drawable> imgs = new ArrayList<>();
+        JsonArray array = new JsonArray();
 
         for (int i = 0; i < 4; i++) {
-            title.add(titles[i]);
-            imgs.add(imgss[i]);
+//            title.add(titles[i]);
+//            imgs.add(imgss[i]);
+            array.add(Categories.getInstance().getJsonArray().get(i));
         }
-        HomeCategoriesAdapter homeCategoriesAdapter = new HomeCategoriesAdapter(getContext(), title, imgs);
+
+
+        HomeCategoriesAdapter homeCategoriesAdapter = new HomeCategoriesAdapter(getContext(), array);
         gv.addHeaderView(headerView);
         gv.addFooterView(footerView);
 

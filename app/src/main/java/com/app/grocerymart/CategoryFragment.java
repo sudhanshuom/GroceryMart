@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.app.grocerymart.Adapters.HomeCategoriesAdapter;
+import com.app.grocerymart.Singelton.Categories;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import java.util.ArrayList;
 public class CategoryFragment extends Fragment {
 
 
-    String titles[] = {"Beverages", "Bread/Bakery", "Canned/Jarred Goods", "Dry/Baking Goods", "Dairy", "Frozen Foods",
-    "Meat", "Produced", "Personal Care", "Cleaners", "Paper Goods"};
+//    String titles[] = {"Beverages", "Bread/Bakery", "Canned/Jarred Goods", "Dry/Baking Goods", "Dairy", "Frozen Foods",
+//    "Meat", "Produced", "Personal Care", "Cleaners", "Paper Goods"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,28 +37,28 @@ public class CategoryFragment extends Fragment {
 
         GridView gv = view.findViewById(R.id.categorygv);
 
-        Drawable imgss[] = {
-                getActivity().getResources().getDrawable(R.drawable.beverages),
-                getActivity().getResources().getDrawable(R.drawable.bakery),
-                getActivity().getResources().getDrawable(R.drawable.canned),
-                getActivity().getResources().getDrawable(R.drawable.baking),
-                getActivity().getResources().getDrawable(R.drawable.dairy),
-                getActivity().getResources().getDrawable(R.drawable.frozen),
-                getActivity().getResources().getDrawable(R.drawable.meat),
-                getActivity().getResources().getDrawable(R.drawable.produce),
-                getActivity().getResources().getDrawable(R.drawable.soap),
-                getActivity().getResources().getDrawable(R.drawable.cleaners),
-                getActivity().getResources().getDrawable(R.drawable.paper)
-        };
+//        Drawable imgss[] = {
+//                getActivity().getResources().getDrawable(R.drawable.beverages),
+//                getActivity().getResources().getDrawable(R.drawable.bakery),
+//                getActivity().getResources().getDrawable(R.drawable.canned),
+//                getActivity().getResources().getDrawable(R.drawable.baking),
+//                getActivity().getResources().getDrawable(R.drawable.dairy),
+//                getActivity().getResources().getDrawable(R.drawable.frozen),
+//                getActivity().getResources().getDrawable(R.drawable.meat),
+//                getActivity().getResources().getDrawable(R.drawable.produce),
+//                getActivity().getResources().getDrawable(R.drawable.soap),
+//                getActivity().getResources().getDrawable(R.drawable.cleaners),
+//                getActivity().getResources().getDrawable(R.drawable.paper)
+//        };
 
-        ArrayList<String> title = new ArrayList<>();
-        ArrayList<Drawable> imgs = new ArrayList<>();
-
-        for (int i = 0; i < 11; i++) {
-            title.add(titles[i]);
-            imgs.add(imgss[i]);
-        }
-        HomeCategoriesAdapter homeCategoriesAdapter = new HomeCategoriesAdapter(getContext(), title, imgs);
+//        ArrayList<String> title = new ArrayList<>();
+//        ArrayList<Drawable> imgs = new ArrayList<>();
+//
+//        for (int i = 0; i < 11; i++) {
+//            title.add(titles[i]);
+//            imgs.add(imgss[i]);
+//        }
+        HomeCategoriesAdapter homeCategoriesAdapter = new HomeCategoriesAdapter(getContext(), Categories.getInstance().getJsonArray());
 
         gv.setAdapter(homeCategoriesAdapter);
 
@@ -66,7 +67,8 @@ public class CategoryFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 SubCategoryFragment fragment = new SubCategoryFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("root", titles[position]);
+                bundle.putString("catName",
+                        Categories.getInstance().getJsonArray().get(position).getAsJsonObject().get("titlehead").getAsString());
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 fragmentManager.beginTransaction().add(R.id.nav_host_fragment, fragment).addToBackStack(null).commit();

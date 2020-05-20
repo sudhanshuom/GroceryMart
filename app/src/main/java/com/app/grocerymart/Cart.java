@@ -11,14 +11,17 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.grocerymart.Adapters.CartAdapter;
+import com.app.grocerymart.Database.CartData;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,10 @@ public class Cart extends AppCompatActivity {
 
     static TextView finPrice;
     static SharedPreferences sharedPreferences;
+    static private CartData mydb;
+    static private RecyclerView rv;
+    static private ArrayList<String> itemIds;
+    static Context ctx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +40,21 @@ public class Cart extends AppCompatActivity {
         setContentView(R.layout.activity_cart);
 
         finPrice = findViewById(R.id.totprice);
-        RecyclerView rv = findViewById(R.id.cartitems);
+        rv = findViewById(R.id.cartitems);
         Button checkout = findViewById(R.id.checkout);
+        ctx = Cart.this;
 
         ArrayList<String> title = new ArrayList<>();
         ArrayList<String> amount = new ArrayList<>();
         ArrayList<String> price = new ArrayList<>();
         ArrayList<Integer> qty = new ArrayList<>();
 
+        mydb = new CartData(this);
+        itemIds = mydb.getAllItems();
+
         sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
 
-        int a = sharedPreferences.getInt("Coffee", 0);
+       /* int a = sharedPreferences.getInt("Coffee", 0);
         int b = sharedPreferences.getInt("Tea", 0);
         int c = sharedPreferences.getInt("Orange Juice", 0);
         int d = sharedPreferences.getInt("Strawberry Juice", 0);
@@ -71,11 +82,15 @@ public class Cart extends AppCompatActivity {
             amount.add("250ml");
             price.add("50");
             qty.add(d);
-        }
+        }*/
 
-        CartAdapter cd = new CartAdapter(Cart.this, title, amount, price, qty);
-        rv.setLayoutManager(new LinearLayoutManager(Cart.this));
-        rv.setAdapter(cd);
+
+        Log.e("cartss", itemIds + "");
+        if (itemIds != null && itemIds.size() > 0) {
+            CartAdapter cd = new CartAdapter(Cart.this, itemIds);
+            rv.setLayoutManager(new LinearLayoutManager(Cart.this));
+            rv.setAdapter(cd);
+        }
         updatePrice();
 
         checkout.setOnClickListener(new View.OnClickListener() {
@@ -89,9 +104,12 @@ public class Cart extends AppCompatActivity {
                 if (emai.equals("")) {
                     startActivity(new Intent(Cart.this, SignIn.class));
                     Toast.makeText(Cart.this, "Please Login First", Toast.LENGTH_LONG).show();
-                }else {
+                } else if(itemIds != null && itemIds.size() > 0){
                     startActivity(new Intent(Cart.this, Checkout.class));
+                }else{
+                    Toast.makeText(Cart.this, "Add at least one item to cart", Toast.LENGTH_LONG).show();
                 }
+
             }
         });
     }
@@ -108,15 +126,26 @@ public class Cart extends AppCompatActivity {
         notificationManager.notify(234, builder.build());
     }
 
-    static public void updatePrice(){
+    static public Double updatePrice() {
+        double sum = 0;
 
-        int a = sharedPreferences.getInt("Coffee", 0);
-        int b = sharedPreferences.getInt("Tea", 0);
-        int c = sharedPreferences.getInt("Orange Juice", 0);
-        int d = sharedPreferences.getInt("Strawberry Juice", 0);
+        for(String ids : itemIds) {
+            Cursor items = mydb.getItem(ids);
+            sum += Double.parseDouble(items.getString(6)) * Double.parseDouble(items.getString(5));
+        }
 
-        double sum = a*25 + b*20 + c*50 + d*50;
+        finPrice.setText(String.format("Rs. %.2f", sum));
+        return sum;
+    }
 
-        finPrice.setText(String.format("%.2f", sum));
+    public static void updateView(){
+        itemIds = mydb.getAllItems();
+        rv.setAdapter(null);
+        if (itemIds != null && itemIds.size() > 0) {
+            CartAdapter cd = new CartAdapter(ctx, itemIds);
+            rv.setLayoutManager(new LinearLayoutManager(ctx));
+            rv.setAdapter(cd);
+        }
+        updatePrice();
     }
 }

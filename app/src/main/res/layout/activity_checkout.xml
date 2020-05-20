@@ -27,6 +27,7 @@
                 android:orientation="vertical">
 
                 <RadioGroup
+                    android:id="@+id/address_rg"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -87,6 +88,18 @@
                         android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="   Detect Location"
+                    android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/gps"
+                    android:padding="5dp"
+                    android:textSize="16sp"
+                    android:textColor="#555555"
+                    android:background="@drawable/grey_selector"/>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/address1_chout"
@@ -150,14 +163,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:hint="District"
-                    android:layout_marginBottom="50dp">
+                    android:hint="District">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/default_address_cb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Save this address as default address."
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="10dp"
+                    android:checked="true"
+                    android:textColor="#555555"/>
 
             </LinearLayout>
 
