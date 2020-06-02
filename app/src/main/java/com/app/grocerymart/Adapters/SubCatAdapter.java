@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -82,64 +83,79 @@ public class SubCatAdapter extends RecyclerView.Adapter<SubCatAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-        holder.ia.setOnClickListener(new View.OnClickListener() {
+//        holder.ia.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(holder.amount < 10){
+//                    holder.amount += 1;
+//                    holder.qty.setText(holder.amount + "");
+//
+//                    if(mydb.insertItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
+//                            items.get(position).getAsJsonObject().get("imagePath").getAsString(),
+//                            items.get(position).getAsJsonObject().get("title").getAsString(),
+//                            items.get(position).getAsJsonObject().get("description").getAsString(),
+//                            items.get(position).getAsJsonObject().get("quantity").getAsString(),
+//                            items.get(position).getAsJsonObject().get("price").getAsString(),
+//                            holder.amount + "")){
+//
+//                    }else{
+//                        mydb.updateItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
+//                                items.get(position).getAsJsonObject().get("imagePath").getAsString(),
+//                                items.get(position).getAsJsonObject().get("title").getAsString(),
+//                                items.get(position).getAsJsonObject().get("description").getAsString(),
+//                                items.get(position).getAsJsonObject().get("quantity").getAsString(),
+//                                items.get(position).getAsJsonObject().get("price").getAsString(),
+//                                holder.amount+"");
+//                    }
+//                    //myEdit.putInt(items.get(position).getAsJsonObject().get("title").getAsString(), holder.amount);
+//                    //myEdit.apply();
+//                }
+//            }
+//        });
+//
+//        holder.im.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(holder.amount > 0){
+//                    holder.amount -= 1;
+//                    holder.qty.setText(holder.amount + "");
+//                    if(mydb.insertItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
+//                            items.get(position).getAsJsonObject().get("imagePath").getAsString(),
+//                            items.get(position).getAsJsonObject().get("title").getAsString(),
+//                            items.get(position).getAsJsonObject().get("description").getAsString(),
+//                            items.get(position).getAsJsonObject().get("quantity").getAsString(),
+//                            items.get(position).getAsJsonObject().get("price").getAsString(),
+//                            holder.amount+"")) {
+//
+//                    }else{
+//                        mydb.updateItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
+//                                items.get(position).getAsJsonObject().get("imagePath").getAsString(),
+//                                items.get(position).getAsJsonObject().get("title").getAsString(),
+//                                items.get(position).getAsJsonObject().get("description").getAsString(),
+//                                items.get(position).getAsJsonObject().get("quantity").getAsString(),
+//                                items.get(position).getAsJsonObject().get("price").getAsString(),
+//                                holder.amount+"");
+//                    }
+//                    //myEdit.putInt(product.get(position), holder.amount);
+//                    //myEdit.apply();
+//                }else if(holder.amount == 0){
+//                    mydb.deleteItem(items.get(position).getAsJsonObject().get("_id").getAsString());
+//                }
+//            }
+//        });
+
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(holder.amount < 10){
-                    holder.amount += 1;
-                    holder.qty.setText(holder.amount + "");
-
-                    if(mydb.insertItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
-                            items.get(position).getAsJsonObject().get("imagePath").getAsString(),
-                            items.get(position).getAsJsonObject().get("title").getAsString(),
-                            items.get(position).getAsJsonObject().get("description").getAsString(),
-                            items.get(position).getAsJsonObject().get("quantity").getAsString(),
-                            items.get(position).getAsJsonObject().get("price").getAsString(),
-                            holder.amount + "")){
-
-                    }else{
-                        mydb.updateItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
-                                items.get(position).getAsJsonObject().get("imagePath").getAsString(),
-                                items.get(position).getAsJsonObject().get("title").getAsString(),
-                                items.get(position).getAsJsonObject().get("description").getAsString(),
-                                items.get(position).getAsJsonObject().get("quantity").getAsString(),
-                                items.get(position).getAsJsonObject().get("price").getAsString(),
-                                holder.amount+"");
-                    }
-                    //myEdit.putInt(items.get(position).getAsJsonObject().get("title").getAsString(), holder.amount);
-                    //myEdit.apply();
-                }
-            }
-        });
-
-        holder.im.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(holder.amount > 0){
-                    holder.amount -= 1;
-                    holder.qty.setText(holder.amount + "");
-                    if(mydb.insertItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
-                            items.get(position).getAsJsonObject().get("imagePath").getAsString(),
-                            items.get(position).getAsJsonObject().get("title").getAsString(),
-                            items.get(position).getAsJsonObject().get("description").getAsString(),
-                            items.get(position).getAsJsonObject().get("quantity").getAsString(),
-                            items.get(position).getAsJsonObject().get("price").getAsString(),
-                            holder.amount+"")) {
-
-                    }else{
-                        mydb.updateItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
-                                items.get(position).getAsJsonObject().get("imagePath").getAsString(),
-                                items.get(position).getAsJsonObject().get("title").getAsString(),
-                                items.get(position).getAsJsonObject().get("description").getAsString(),
-                                items.get(position).getAsJsonObject().get("quantity").getAsString(),
-                                items.get(position).getAsJsonObject().get("price").getAsString(),
-                                holder.amount+"");
-                    }
-                    //myEdit.putInt(product.get(position), holder.amount);
-                    //myEdit.apply();
-                }else if(holder.amount == 0){
-                    mydb.deleteItem(items.get(position).getAsJsonObject().get("_id").getAsString());
-                }
+            public void onClick(View v) {
+               if( ! mydb.insertItem(items.get(position).getAsJsonObject().get("_id").getAsString(),
+                        items.get(position).getAsJsonObject().get("imagePath").getAsString(),
+                        items.get(position).getAsJsonObject().get("title").getAsString(),
+                        items.get(position).getAsJsonObject().get("description").getAsString(),
+                        items.get(position).getAsJsonObject().get("quantity").getAsString(),
+                        items.get(position).getAsJsonObject().get("price").getAsString(),
+                        1+"")){
+                   Toast.makeText(context, "Item already added", Toast.LENGTH_SHORT).show();
+               }
             }
         });
 
@@ -198,21 +214,23 @@ public class SubCatAdapter extends RecyclerView.Adapter<SubCatAdapter.ViewHolder
         TextView tv;
         TextView am;
         TextView pr;
-        TextView qty;
+        //TextView qty;
         ImageView productImage;
-        ImageView ia;
-        ImageView im;
-        int amount=0;
+//        ImageView ia;
+//        ImageView im;
+        Button addToCart;
+        //int amount=0;
         ViewHolder(View view) {
             super(view);
             tv = view.findViewById(R.id.product);
             am = view.findViewById(R.id.amount);
-            qty = view.findViewById(R.id.qty);
+            //qty = view.findViewById(R.id.qty);
             pr = view.findViewById(R.id.price);
             productImage = view.findViewById(R.id.productImage);
-            ia = view.findViewById(R.id.plus);
-            im = view.findViewById(R.id.minus);
-            amount = 0;
+            addToCart = view.findViewById(R.id.addToCart);
+//            ia = view.findViewById(R.id.plus);
+//            im = view.findViewById(R.id.minus);
+           // amount = 0;
         }
     }
 }

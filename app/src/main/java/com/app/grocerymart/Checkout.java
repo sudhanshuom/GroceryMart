@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,6 +24,8 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,6 +67,7 @@ public class Checkout extends AppCompatActivity {
     FusedLocationProviderClient mFusedLocationClient;
     LocationCallback mLocationCallback;
     ProgressDialog dialog;
+    CheckBox defaultAddressCb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class Checkout extends AppCompatActivity {
         setContentView(R.layout.activity_checkout);
 
         shakeAnimation = AnimationUtils.loadAnimation(this, R.anim.shake_animation);
+
 
         name = findViewById(R.id.name_chout);
         phone1 = findViewById(R.id.phone1_chout);
@@ -81,8 +86,23 @@ public class Checkout extends AppCompatActivity {
         local = findViewById(R.id.local_area_chout);
         district = findViewById(R.id.district_chout);
         radioGroup = findViewById(R.id.address_rg);
+        defaultAddressCb = findViewById(R.id.default_address_cb);
+        final RadioButton defAddressrb = findViewById(R.id.default_address);
+        final RadioButton newAddressrb = findViewById(R.id.new_address);
         Button continu = findViewById(R.id.continue_chout);
         TextView location = findViewById(R.id.location);
+
+        Bundle extras = getIntent().getExtras();
+        boolean fromProfile = false;
+        if (extras != null) {
+            fromProfile = extras.getBoolean("fromProfile");
+            if(fromProfile){
+                continu.setText("Done");
+                defaultAddressCb.setVisibility(View.GONE);
+                newAddressrb.setText("Add new address");
+                defAddressrb.setText("Show default address");
+            }
+        }
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,18 +112,109 @@ public class Checkout extends AppCompatActivity {
             }
         });
 
-
-        continu.setOnClickListener(new View.OnClickListener() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                if(isValid()){
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.new_address){
+                    name.getEditText().setText("");
+                    phone1.getEditText().setText("");
+                    phone2.getEditText().setText("");
+                    address1.getEditText().setText("");
+                    address2.getEditText().setText("");
+                    postal.getEditText().setText("");
+                    local.getEditText().setText("");
+                    district.getEditText().setText("");
+                }else if(checkedId == R.id.default_address){
+                    SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                    if(sharedPreferences.getString("def_order_address", null) == null){
+                        Toast.makeText(Checkout.this, "No default address found\nAdd new address", Toast.LENGTH_LONG).show();
+                        RadioButton rb = findViewById(R.id.new_address);
+                        RadioButton rb2 = findViewById(R.id.default_address);
+                        rb.setChecked(true);
+                        rb2.setChecked(false);
+                    }else {
+                        name.getEditText().setText(sharedPreferences.getString("def_order_name", ""));
+                        phone1.getEditText().setText(sharedPreferences.getString("def_order_phone1", ""));
+                        phone2.getEditText().setText(sharedPreferences.getString("def_order_phone2", ""));
+                        address1.getEditText().setText(sharedPreferences.getString("def_order_address1", ""));
+                        address2.getEditText().setText(sharedPreferences.getString("def_order_address2", ""));
+                        postal.getEditText().setText(sharedPreferences.getString("def_order_areapin", ""));
+                        local.getEditText().setText(sharedPreferences.getString("def_order_locareaname", ""));
+                        district.getEditText().setText(sharedPreferences.getString("def_order_district", ""));
 
+                    }
                 }
-                startActivity(new Intent(Checkout.this, PaymentActivity.class));
-                finish();
             }
         });
 
+        final boolean finalFromProfile = fromProfile;
+        continu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(finalFromProfile){
+                    if(newAddressrb.isChecked() && isValid()){
+                        String address = getAddressString();
+                        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+                        myEdit.putString("def_order_address", address);
+                        myEdit.putString("def_order_name", name.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_phone1", phone1.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_phone2", phone2.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_address1", address1.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_address2", address2.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_areapin", postal.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_locareaname", local.getEditText().getText().toString().trim());
+                        myEdit.putString("def_order_district", district.getEditText().getText().toString().trim());
+
+                        finish();
+                    }else if(defAddressrb.isChecked()){
+                        finish();
+                    }
+                    return;
+                }else {
+                    if (isValid()) {
+                        String address = getAddressString();
+                        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref", MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+                        if (defaultAddressCb.isChecked()) {
+                            myEdit.putString("def_order_address", address);
+                            myEdit.putString("def_order_name", name.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_phone1", phone1.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_phone2", phone2.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_address1", address1.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_address2", address2.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_areapin", postal.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_locareaname", local.getEditText().getText().toString().trim());
+                            myEdit.putString("def_order_district", district.getEditText().getText().toString().trim());
+                        }
+
+                        myEdit.putString("temp_order_address", address);
+                        myEdit.putString("temp_order_name", name.getEditText().getText().toString().trim());
+                        myEdit.putString("temp_order_phone1", phone1.getEditText().getText().toString().trim());
+                        myEdit.putString("temp_order_phone2", phone2.getEditText().getText().toString().trim());
+
+                        myEdit.apply();
+                        Intent in = new Intent(Checkout.this, PaymentActivity.class);
+                        startActivity(in);
+                        finish();
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    private String getAddressString(){
+        StringBuilder st = new StringBuilder();
+        st.append(address1.getEditText().getText().toString().trim());
+        st.append(", " + address2.getEditText().getText().toString().trim());
+        st.append(", " + postal.getEditText().getText().toString().trim());
+        st.append(", " + local.getEditText().getText().toString().trim());
+        st.append(", " + district.getEditText().getText().toString().trim());
+        return st.toString();
     }
 
     private boolean isValid(){

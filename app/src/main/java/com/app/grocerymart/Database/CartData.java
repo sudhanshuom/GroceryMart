@@ -18,9 +18,9 @@ public class CartData extends SQLiteOpenHelper {
     private static final String CART_ITEM_IMAGEPATH = "imagePath";
     private static final String CART_ITEM_TITLE = "title";
     private static final String CART_ITEM_DESCRIPTION = "description";
-    private static final String CART_ITEM_AMOUNT = "amount"; // Count
     private static final String CART_ITEM_QUANTITY = "quantity";// Initial price for specific quantity
     private static final String CART_ITEM_PRICE = "price";
+    private static final String CART_ITEM_AMOUNT = "amount"; // Count
     private HashMap hp;
 
     public CartData(Context context) {
@@ -89,11 +89,9 @@ public class CartData extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteItem (String id) {
+    public void deleteItem (String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(CART_TABLE_NAME,
-                "id = ? ",
-                new String[] { id });
+        db.delete(CART_TABLE_NAME,"id = ? ", new String[]{id});
     }
 
     public ArrayList<String> getAllItems() {
@@ -104,11 +102,14 @@ public class CartData extends SQLiteOpenHelper {
         Cursor res =  db.rawQuery( "select * from " + CART_TABLE_NAME, null );
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
+        while(!res.isAfterLast()){
             array_list.add(res.getString(res.getColumnIndex(CART_ITEM_COLUMN_ID)));
             res.moveToNext();
         }
         return array_list;
     }
 
+    public void deleteAllData(){
+        this.getWritableDatabase().execSQL("delete from " + CART_TABLE_NAME);
+    }
 }

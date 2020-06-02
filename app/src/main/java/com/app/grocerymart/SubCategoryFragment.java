@@ -50,7 +50,7 @@ public class SubCategoryFragment extends Fragment {
         jsonObject.addProperty("searchText", "beverages");
 
         Ion.with(getActivity().getApplicationContext())
-                .load("GET","http://ec2-18-218-92-210.us-east-2.compute.amazonaws.com:3030/searchByCategory?searchText=beverages")
+                .load("GET","http://ec2-18-218-92-210.us-east-2.compute.amazonaws.com:3030/searchByCategory?searchText="+categoryName)
                 //.setJsonObjectBody(jsonObject)
                 .asJsonArray()
                 .setCallback(new FutureCallback<JsonArray>() {

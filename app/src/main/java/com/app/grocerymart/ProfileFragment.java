@@ -2,6 +2,7 @@ package com.app.grocerymart;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
@@ -26,6 +27,8 @@ public class ProfileFragment extends Fragment {
 
         TextView name = view.findViewById(R.id.pr_name);
         TextView email = view.findViewById(R.id.pr_email);
+        TextView viewOrder = view.findViewById(R.id.view_orders);
+        TextView viewAddress = view.findViewById(R.id.view_address);
 
         NavigationView navigationView;
         navigationView = getActivity().findViewById(R.id.nav_view);
@@ -46,6 +49,24 @@ public class ProfileFragment extends Fragment {
             name.setText(nam);
             email.setText(emai);
         }
+
+        viewOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new MyOrderFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.nav_host_fragment, fragment).commit();
+            }
+        });
+
+        viewAddress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(getActivity(), Checkout.class);
+                in.putExtra("fromProfile", true);
+                startActivity(in);
+            }
+        });
 
         return view;
     }
