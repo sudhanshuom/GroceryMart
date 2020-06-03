@@ -194,15 +194,13 @@ public class PaymentActivity extends Activity implements PaymentResultListener {
         cart.addProperty("totalPrice", String.format("Rs. %.2f", getTotalPrice()));
         order.add("cart", cart);
 
-        JsonObject finobj = new JsonObject();
-        finobj.add("orderObject", order);
+//        JsonObject finobj = new JsonObject();
+//        finobj.add("orderObject", order);
 
-        String str = "http://ec2-18-218-92-210.us-east-2.compute.amazonaws.com:3030/saveOrder?orderObject=" + order.toString();
-
-        Log.e("finobj", str+"");
+        Log.e("finobj", order.toString());
         Ion.with(getApplicationContext())
                 .load("POST", "http://ec2-18-218-92-210.us-east-2.compute.amazonaws.com:3030/saveOrder")
-                .setJsonObjectBody(finobj)
+                .setBodyParameter("orderObject", order.toString())
                 .asJsonObject()
                 .setCallback(new FutureCallback<JsonObject>() {
                     @Override

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -68,6 +69,7 @@ public class Checkout extends AppCompatActivity {
     LocationCallback mLocationCallback;
     ProgressDialog dialog;
     CheckBox defaultAddressCb;
+    boolean fromProfile = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class Checkout extends AppCompatActivity {
         TextView location = findViewById(R.id.location);
 
         Bundle extras = getIntent().getExtras();
-        boolean fromProfile = false;
+
         if (extras != null) {
             fromProfile = extras.getBoolean("fromProfile");
             if(fromProfile){
@@ -476,5 +478,14 @@ public class Checkout extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!fromProfile)
+            startActivity(new Intent(Checkout.this, Cart.class));
+
+        finish();
     }
 }

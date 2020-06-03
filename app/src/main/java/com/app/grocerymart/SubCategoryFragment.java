@@ -67,7 +67,7 @@ public class SubCategoryFragment extends Fragment {
                             recyclerView.setAdapter(subCatAdapter);
 
                         } else {
-                            Toast.makeText(getActivity(), "Invalid credentials", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "Nothing is there...", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

@@ -82,7 +82,7 @@ public class SignIn extends AppCompatActivity {
 
                                         dialog.dismiss();
 
-//                                        startActivity(new Intent(SignIn.this, Home.class));
+                                        startActivity(new Intent(SignIn.this, Home.class));
                                         finish();
 
                                     } else {

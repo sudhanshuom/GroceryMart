@@ -95,7 +95,7 @@ public class SignUp extends AppCompatActivity {
 
                                         dialog.dismiss();
 
-                                        //startActivity(new Intent(SignUp.this, Home.class));
+                                        startActivity(new Intent(SignUp.this, Home.class));
                                         finish();
 
                                     } else {

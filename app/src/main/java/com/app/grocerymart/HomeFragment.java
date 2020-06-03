@@ -85,31 +85,15 @@ public class HomeFragment extends Fragment {
         ArrayList<String> urls = new ArrayList<>();
         ArrayList<String> urls2 = new ArrayList<>();
 
-//        Drawable imgss[] = {
-//                getActivity().getResources().getDrawable(R.drawable.beverages),
-//                getActivity().getResources().getDrawable(R.drawable.bakery),
-//                getActivity().getResources().getDrawable(R.drawable.canned),
-//                getActivity().getResources().getDrawable(R.drawable.baking),
-////                getActivity().getResources().getDrawable(R.drawable.dairy),
-////                getActivity().getResources().getDrawable(R.drawable.frozen),
-////                getActivity().getResources().getDrawable(R.drawable.meat),
-////                getActivity().getResources().getDrawable(R.drawable.produce),
-////                getActivity().getResources().getDrawable(R.drawable.soap),
-////                getActivity().getResources().getDrawable(R.drawable.cleaners),
-////                getActivity().getResources().getDrawable(R.drawable.paper)
-//        };
-
-        urls.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
         urls.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
         urls.add("https://www.birthdaywishes.expert/wp-content/uploads/2015/10/cover-photo-good-morning-images.jpg");
         urls.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
         urls.add("https://www.birthdaywishes.expert/wp-content/uploads/2015/10/cover-photo-good-morning-images.jpg");
-        urls.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
 
 
-        urls2.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
         urls2.add("https://www.birthdaywishes.expert/wp-content/uploads/2015/10/cover-photo-good-morning-images.jpg");
         urls2.add("https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg");
+        urls2.add("https://www.birthdaywishes.expert/wp-content/uploads/2015/10/cover-photo-good-morning-images.jpg");
 
         viewPager.setAdapter(new ImageAdapter(getContext(), urls));
         viewPager.startAutoScroll();
@@ -121,13 +105,9 @@ public class HomeFragment extends Fragment {
         viewPager2.setInterval(3000);
         viewPager2.setCycle(true);
 
-        ArrayList<String> title = new ArrayList<>();
-        ArrayList<Drawable> imgs = new ArrayList<>();
         JsonArray array = new JsonArray();
 
         for (int i = 0; i < 4; i++) {
-//            title.add(titles[i]);
-//            imgs.add(imgss[i]);
             array.add(Categories.getInstance().getJsonArray().get(i));
         }
 

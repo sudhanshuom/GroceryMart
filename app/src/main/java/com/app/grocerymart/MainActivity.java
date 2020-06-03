@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.app.grocerymart.Singelton.Categories;
@@ -27,8 +29,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        //createNotificationChannels();
+        createNotificationChannels();
         Ion.with(getApplicationContext())
                 .load("GET","http://ec2-18-218-92-210.us-east-2.compute.amazonaws.com:3030/getCategories")
                 .asJsonArray()

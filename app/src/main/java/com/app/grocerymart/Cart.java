@@ -106,6 +106,7 @@ public class Cart extends AppCompatActivity {
                     Toast.makeText(Cart.this, "Please Login First", Toast.LENGTH_LONG).show();
                 } else if(itemIds != null && itemIds.size() > 0){
                     startActivity(new Intent(Cart.this, Checkout.class));
+                    finish();
                 }else{
                     Toast.makeText(Cart.this, "Add at least one item to cart", Toast.LENGTH_LONG).show();
                 }
